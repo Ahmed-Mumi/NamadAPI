@@ -1,0 +1,17 @@
+[
+  {
+    "FirstName": "Ahmed",
+    "LastName": "Mumi",
+    "FullName": "Ahmed Mumi",
+    "Created": "2020-01-11",
+    "LastActive": "2020-01-11",
+    "DateOfBirth": "1995-10-02",
+    "Email": "ahmed.muminovic@edu.fit.ba",
+    "Photos": [
+      {
+        "Url": "https://i.swncdn.com/media/800w/cms/CW/faith/707-Hitchhiker.220w.tn.jpg",
+        "IsMain": true
+      }
+    ]
+  }
+]
