@@ -1,14 +1,14 @@
+using Hangfire;
+using Hangfire.MemoryStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NomadAPI.Data;
 using NomadAPI.Extensions;
+using NomadAPI.Interfaces;
 using NomadAPI.Middleware;
 using NomadAPI.SignalR;
-using Hangfire;
-using Hangfire.MemoryStorage;
-using NomadAPI.Interfaces;
-using NomadAPI.Data;
 using System;
 
 namespace NomadAPI
@@ -38,7 +38,7 @@ namespace NomadAPI
                 .UseMemoryStorage());
             services.AddHangfireServer();
             services.AddSignalR();
-            services.AddSingleton<IHangfireDate, HangfireDate>();
+            services.AddScoped<IHangfireDate, HangfireDate>();
 
         }
 
@@ -69,7 +69,8 @@ namespace NomadAPI
             recurringJobManager.AddOrUpdate(
                 "Run every day at 00:01",
                 () => serviceProvider.GetService<IHangfireDate>().DeactiveExpiredTravels(),
-                Cron.Daily(0, 1)
+                Cron.Daily
+                //Cron.Daily(0, 1)
                 );
         }
     }

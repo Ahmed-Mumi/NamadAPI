@@ -19,9 +19,9 @@ namespace NomadAPI.Data
             var isAnythingChanged = false;
             foreach (var travel in travels)
             {
-                if (travel.TravelToDate != null)
+                if (travel.TravelFromDate != null)
                 {
-                    if (IsDateSame(travel.TravelToDate) && travel.Active)
+                    if (IsDateSame(travel.TravelFromDate) && travel.Active)
                     {
                         travel.Active = false;
                         isAnythingChanged = true;
@@ -31,15 +31,15 @@ namespace NomadAPI.Data
 
             if (isAnythingChanged)
             {
-                _unitOfWork.Complete();
+                _context.SaveChanges();
             }
         }
 
-        private bool IsDateSame(DateTime? travelToDate)
+        private bool IsDateSame(DateTime? travelFromDate)
         {
-            if (travelToDate.Value.Day == DateTime.UtcNow.Day &&
-                travelToDate.Value.Month == DateTime.UtcNow.Month &&
-                travelToDate.Value.Year == DateTime.UtcNow.Year)
+            if (travelFromDate.Value.Day == DateTime.Now.Day &&
+                travelFromDate.Value.Month == DateTime.Now.Month &&
+                travelFromDate.Value.Year == DateTime.Now.Year)
                 return true;
             return false;
         }
