@@ -49,6 +49,11 @@ namespace NomadAPI.Data
                 .FirstOrDefaultAsync(a => a.UserAppliedAdId == userAppliedAdId && a.TravelId == travelId);
         }
 
+        public IQueryable<Travel> GetTravelsHangfire()
+        {
+            return _context.Travels.AsQueryable();
+        }
+
         public async Task<PagedList<TravelDto>> GetTravelsAsync(TravelParams travelParams, IList<string> roles)
         {
             IQueryable<Travel> query;

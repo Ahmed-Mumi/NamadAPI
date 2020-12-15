@@ -2,6 +2,7 @@
 using NomadAPI.Entities;
 using NomadAPI.Helpers;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NomadAPI.Interfaces
@@ -21,5 +22,6 @@ namespace NomadAPI.Interfaces
         //void AddTravelCity(TravelCity travelCity);
         void RemoveTravelCity(TravelCity travelCityToRemove);
         Task<TravelCity> GetTravelCityAsync(int travelId, int cityId);
+        IQueryable<Travel> GetTravelsHangfire();
     }
 }

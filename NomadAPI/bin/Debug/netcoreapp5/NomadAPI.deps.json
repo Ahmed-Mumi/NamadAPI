@@ -27,6 +27,9 @@
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.1.0",
           "CloudinaryDotNet": "1.14.0",
+          "Hangfire.AspNetCore": "1.7.18",
+          "Hangfire.Core": "1.7.18",
+          "Hangfire.MemoryStorage": "1.7.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "5.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "5.0.0",
           "Microsoft.EntityFrameworkCore": "5.0.0",
@@ -368,6 +371,80 @@
         },
         "compile": {
           "lib/netstandard1.3/CloudinaryDotNet.dll": {}
+        }
+      },
+      "Hangfire.AspNetCore/1.7.18": {
+        "dependencies": {
+          "Hangfire.Core": "1.7.18"
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/Hangfire.AspNetCore.dll": {
+            "assemblyVersion": "1.7.18.0",
+            "fileVersion": "1.7.18.0"
+          }
+        },
+        "compile": {
+          "lib/netcoreapp3.0/Hangfire.AspNetCore.dll": {}
+        }
+      },
+      "Hangfire.Core/1.7.18": {
+        "dependencies": {
+          "Newtonsoft.Json": "12.0.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Hangfire.Core.dll": {
+            "assemblyVersion": "1.7.18.0",
+            "fileVersion": "1.7.18.0"
+          }
+        },
+        "resources": {
+          "lib/netstandard2.0/ca/Hangfire.Core.resources.dll": {
+            "locale": "ca"
+          },
+          "lib/netstandard2.0/es/Hangfire.Core.resources.dll": {
+            "locale": "es"
+          },
+          "lib/netstandard2.0/fa/Hangfire.Core.resources.dll": {
+            "locale": "fa"
+          },
+          "lib/netstandard2.0/fr/Hangfire.Core.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/netstandard2.0/nl/Hangfire.Core.resources.dll": {
+            "locale": "nl"
+          },
+          "lib/netstandard2.0/pt-BR/Hangfire.Core.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "lib/netstandard2.0/pt-PT/Hangfire.Core.resources.dll": {
+            "locale": "pt-PT"
+          },
+          "lib/netstandard2.0/pt/Hangfire.Core.resources.dll": {
+            "locale": "pt"
+          },
+          "lib/netstandard2.0/zh-TW/Hangfire.Core.resources.dll": {
+            "locale": "zh-TW"
+          },
+          "lib/netstandard2.0/zh/Hangfire.Core.resources.dll": {
+            "locale": "zh"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Hangfire.Core.dll": {}
+        }
+      },
+      "Hangfire.MemoryStorage/1.7.0": {
+        "dependencies": {
+          "Hangfire.Core": "1.7.18"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Hangfire.MemoryStorage.dll": {
+            "assemblyVersion": "1.7.0.0",
+            "fileVersion": "1.7.0.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.3/Hangfire.MemoryStorage.dll": {}
         }
       },
       "Humanizer.Core/2.8.26": {
@@ -3045,6 +3122,27 @@
       "sha512": "sha512-d6bAnrCc6iQ1pIMepR+krE0CgJoVRH2/uLPHZpZ5QY4zyqkLehwDocqWHFaLlkZJFUdEWLBianHrFitGdyQkcQ==",
       "path": "cloudinarydotnet/1.14.0",
       "hashPath": "cloudinarydotnet.1.14.0.nupkg.sha512"
+    },
+    "Hangfire.AspNetCore/1.7.18": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-n37EG9waT3dNJm+s7WKOkCYFFVd71Bxd8nwyU4a8afI4s2A+mYD6JllcecMPCmdkYgfqBrwGyu0mVhxLRMZC9g==",
+      "path": "hangfire.aspnetcore/1.7.18",
+      "hashPath": "hangfire.aspnetcore.1.7.18.nupkg.sha512"
+    },
+    "Hangfire.Core/1.7.18": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Ka/QWgqlQBxKdq8kpQ943gA1KH5l0KqO0n53oKMZGYqHRBh3h39lZWIlA7JTpvN34v6Osd5eyU64xuvt0lgRoQ==",
+      "path": "hangfire.core/1.7.18",
+      "hashPath": "hangfire.core.1.7.18.nupkg.sha512"
+    },
+    "Hangfire.MemoryStorage/1.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-g4hBdD8CaePScNWDOtRlR0GCxRyCK3KaItPcmABurlUZ8hs0YrpGUAYWgSWUSw6RXuPf1ZUK0l4REpV+sKYm/w==",
+      "path": "hangfire.memorystorage/1.7.0",
+      "hashPath": "hangfire.memorystorage.1.7.0.nupkg.sha512"
     },
     "Humanizer.Core/2.8.26": {
       "type": "package",

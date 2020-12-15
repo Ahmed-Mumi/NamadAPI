@@ -1,12 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "eowd+rwfLHjJ7f8KwEho1p3J+K1d8LTMLoUy9fpaBJjU3cacIlkK4wybevK/ODmw+cTKc0ON/NHz0cuCAtGD1A==",
+  "dgSpecHash": "2L5YRX7DSERq54vOn4TTK72kQUHf9FDJl8Pib4PaJPZLd5aaLKFIzSE33VRj28SDK5D37RjKbYWivCXif/vd2g==",
   "success": true,
   "projectFilePath": "C:\\Users\\Ahmed\\source\\repos\\NomadDipl\\NomadAPI\\NomadAPI\\NomadAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Ahmed\\.nuget\\packages\\automapper\\10.1.0\\automapper.10.1.0.nupkg.sha512",
     "C:\\Users\\Ahmed\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.0\\automapper.extensions.microsoft.dependencyinjection.8.1.0.nupkg.sha512",
     "C:\\Users\\Ahmed\\.nuget\\packages\\cloudinarydotnet\\1.14.0\\cloudinarydotnet.1.14.0.nupkg.sha512",
+    "C:\\Users\\Ahmed\\.nuget\\packages\\hangfire.aspnetcore\\1.7.18\\hangfire.aspnetcore.1.7.18.nupkg.sha512",
+    "C:\\Users\\Ahmed\\.nuget\\packages\\hangfire.core\\1.7.18\\hangfire.core.1.7.18.nupkg.sha512",
+    "C:\\Users\\Ahmed\\.nuget\\packages\\hangfire.memorystorage\\1.7.0\\hangfire.memorystorage.1.7.0.nupkg.sha512",
     "C:\\Users\\Ahmed\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Ahmed\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\5.0.0\\microsoft.aspnetcore.authentication.jwtbearer.5.0.0.nupkg.sha512",
     "C:\\Users\\Ahmed\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.0\\microsoft.aspnetcore.cryptography.internal.5.0.0.nupkg.sha512",

@@ -5,6 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 using NomadAPI.Extensions;
 using NomadAPI.Middleware;
 using NomadAPI.SignalR;
+using Hangfire;
+using Hangfire.MemoryStorage;
+using NomadAPI.Interfaces;
+using NomadAPI.Data;
+using System;
 
 namespace NomadAPI
 {
@@ -26,12 +31,20 @@ namespace NomadAPI
             services.AddIdentityServices(_config);
             services.AddControllers();
             services.AddCors();
+            services.AddHangfire(config =>
+                config.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseDefaultTypeSerializer()
+                .UseMemoryStorage());
+            services.AddHangfireServer();
             services.AddSignalR();
+            services.AddSingleton<IHangfireDate, HangfireDate>();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRecurringJobManager recurringJobManager,
+            IServiceProvider serviceProvider)
         {
             app.UseMiddleware<ExceptionMiddleware>();
 
@@ -51,6 +64,13 @@ namespace NomadAPI
                 endpoints.MapHub<PresenceHub>("hubs/presence");
                 endpoints.MapHub<MessageHub>("hubs/message");
             });
+
+            app.UseHangfireDashboard();
+            recurringJobManager.AddOrUpdate(
+                "Run every day at 00:01",
+                () => serviceProvider.GetService<IHangfireDate>().DeactiveExpiredTravels(),
+                Cron.Daily(0, 1)
+                );
         }
     }
 }

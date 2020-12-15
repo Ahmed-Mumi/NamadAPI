@@ -60,3 +60,16 @@ C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\obj\Debug\netcoreapp5\re
 C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\obj\Debug\netcoreapp5\NomadAPI.pdb
 C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\obj\Debug\netcoreapp5\NomadAPI.genruntimeconfig.cache
 C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\obj\Debug\netcoreapp5\NomadAPI.csprojAssemblyReference.cache
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\Hangfire.AspNetCore.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\Hangfire.Core.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\Hangfire.MemoryStorage.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\ca\Hangfire.Core.resources.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\es\Hangfire.Core.resources.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\fa\Hangfire.Core.resources.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\fr\Hangfire.Core.resources.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\nl\Hangfire.Core.resources.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\pt-BR\Hangfire.Core.resources.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\pt-PT\Hangfire.Core.resources.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\pt\Hangfire.Core.resources.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\zh-TW\Hangfire.Core.resources.dll
+C:\Users\Ahmed\source\repos\NomadDipl\NomadAPI\NomadAPI\bin\Debug\netcoreapp5\zh\Hangfire.Core.resources.dll
