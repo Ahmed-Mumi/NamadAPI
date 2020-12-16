@@ -91,6 +91,19 @@ namespace NomadAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FriendshipStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FriendshipStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Groups",
                 columns: table => new
                 {
@@ -395,6 +408,37 @@ namespace NomadAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Friendships",
+                columns: table => new
+                {
+                    UserSentRequestId = table.Column<int>(type: "int", nullable: false),
+                    UserReceivedRequestId = table.Column<int>(type: "int", nullable: false),
+                    SentFriendshipDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ConfirmedFriendshipDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    FriendshipStatusId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Friendships", x => new { x.UserReceivedRequestId, x.UserSentRequestId });
+                    table.ForeignKey(
+                        name: "FK_Friendships_AspNetUsers_UserReceivedRequestId",
+                        column: x => x.UserReceivedRequestId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Friendships_AspNetUsers_UserSentRequestId",
+                        column: x => x.UserSentRequestId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Friendships_FriendshipStatuses_FriendshipStatusId",
+                        column: x => x.FriendshipStatusId,
+                        principalTable: "FriendshipStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Connections",
                 columns: table => new
                 {
@@ -461,7 +505,7 @@ namespace NomadAPI.Migrations
                     NumberOfApplicants = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MeansOfTravelId = table.Column<int>(type: "int", nullable: false)
+                    MeansOfTravelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -477,7 +521,7 @@ namespace NomadAPI.Migrations
                         column: x => x.MeansOfTravelId,
                         principalTable: "MeansOfTravels",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -542,6 +586,7 @@ namespace NomadAPI.Migrations
                 {
                     UserAppliedAdId = table.Column<int>(type: "int", nullable: false),
                     TravelId = table.Column<int>(type: "int", nullable: false),
+                    UserPostedAdId = table.Column<int>(type: "int", nullable: false),
                     AppliedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Official = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -666,6 +711,16 @@ namespace NomadAPI.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Friendships_FriendshipStatusId",
+                table: "Friendships",
+                column: "FriendshipStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Friendships_UserSentRequestId",
+                table: "Friendships",
+                column: "UserSentRequestId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LanguageUser_LanguageId",
                 table: "LanguageUser",
                 column: "LanguageId");
@@ -756,6 +811,9 @@ namespace NomadAPI.Migrations
                 name: "CountryUsers");
 
             migrationBuilder.DropTable(
+                name: "Friendships");
+
+            migrationBuilder.DropTable(
                 name: "LanguageUser");
 
             migrationBuilder.DropTable(
@@ -781,6 +839,9 @@ namespace NomadAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "CountryUserStatuses");
+
+            migrationBuilder.DropTable(
+                name: "FriendshipStatuses");
 
             migrationBuilder.DropTable(
                 name: "Languages");

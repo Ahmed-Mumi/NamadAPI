@@ -44,6 +44,8 @@ namespace NomadAPI.Entities
         public ICollection<Report> UsersReported { get; set; }
         public ICollection<CountryUser> Countries { get; set; }
         public ICollection<LanguageUser> Languages { get; set; }
+        public ICollection<Friendship> UsersSentRequest { get; set; }
+        public ICollection<Friendship> UsersReceivedRequest { get; set; }
 
 
         [NotMapped]

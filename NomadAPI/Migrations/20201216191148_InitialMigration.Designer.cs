@@ -10,7 +10,7 @@ using NomadAPI.Data;
 namespace NomadAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201216131125_InitialMigration")]
+    [Migration("20201216191148_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -282,6 +282,9 @@ namespace NomadAPI.Migrations
                     b.Property<bool>("Official")
                         .HasColumnType("bit");
 
+                    b.Property<int>("UserPostedAdId")
+                        .HasColumnType("int");
+
                     b.HasKey("UserAppliedAdId", "TravelId");
 
                     b.HasIndex("TravelId");
@@ -446,6 +449,47 @@ namespace NomadAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CountryUserStatuses");
+                });
+
+            modelBuilder.Entity("NomadAPI.Entities.Friendship", b =>
+                {
+                    b.Property<int>("UserReceivedRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserSentRequestId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ConfirmedFriendshipDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FriendshipStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SentFriendshipDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("UserReceivedRequestId", "UserSentRequestId");
+
+                    b.HasIndex("FriendshipStatusId");
+
+                    b.HasIndex("UserSentRequestId");
+
+                    b.ToTable("Friendships");
+                });
+
+            modelBuilder.Entity("NomadAPI.Entities.FriendshipStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FriendshipStatuses");
                 });
 
             modelBuilder.Entity("NomadAPI.Entities.Group", b =>
@@ -637,7 +681,7 @@ namespace NomadAPI.Migrations
                     b.Property<bool>("Flexible")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MeansOfTravelId")
+                    b.Property<int?>("MeansOfTravelId")
                         .HasColumnType("int");
 
                     b.Property<int>("NumberOfApplicants")
@@ -838,6 +882,33 @@ namespace NomadAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("NomadAPI.Entities.Friendship", b =>
+                {
+                    b.HasOne("NomadAPI.Entities.FriendshipStatus", "FriendshipStatus")
+                        .WithMany()
+                        .HasForeignKey("FriendshipStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NomadAPI.Entities.AppUser", "UserReceivedRequest")
+                        .WithMany("UsersReceivedRequest")
+                        .HasForeignKey("UserReceivedRequestId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("NomadAPI.Entities.AppUser", "UserSentRequest")
+                        .WithMany("UsersSentRequest")
+                        .HasForeignKey("UserSentRequestId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("FriendshipStatus");
+
+                    b.Navigation("UserReceivedRequest");
+
+                    b.Navigation("UserSentRequest");
+                });
+
             modelBuilder.Entity("NomadAPI.Entities.LanguageUser", b =>
                 {
                     b.HasOne("NomadAPI.Entities.Language", "Language")
@@ -918,9 +989,7 @@ namespace NomadAPI.Migrations
                 {
                     b.HasOne("NomadAPI.Entities.MeansOfTravel", "MeansOfTravel")
                         .WithMany()
-                        .HasForeignKey("MeansOfTravelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MeansOfTravelId");
 
                     b.HasOne("NomadAPI.Entities.AppUser", "User")
                         .WithMany("Travels")
@@ -1000,9 +1069,13 @@ namespace NomadAPI.Migrations
 
                     b.Navigation("UserRoles");
 
+                    b.Navigation("UsersReceivedRequest");
+
                     b.Navigation("UsersReported");
 
                     b.Navigation("UsersReports");
+
+                    b.Navigation("UsersSentRequest");
                 });
 
             modelBuilder.Entity("NomadAPI.Entities.Country", b =>

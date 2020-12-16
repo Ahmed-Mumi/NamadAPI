@@ -90,5 +90,21 @@ namespace NomadAPI.Data
             return await PagedList<ReportDto>.CreateAsync(query.ProjectTo<ReportDto>(_mapper.ConfigurationProvider).AsNoTracking(),
                 reportParams.PageNumber, reportParams.PageSize);
         }
+
+        public void AddFriendship(Friendship friendship)
+        {
+            _context.Friendships.Add(friendship);
+        }
+
+        public void RemoveFriendship(Friendship friendship)
+        {
+            _context.Friendships.Remove(friendship);
+        }
+
+        public async Task<Friendship> GetFriendship(int userSentRequestId, int userReceivedRequestId)
+        {
+            return await _context.Friendships.SingleOrDefaultAsync(f => f.UserSentRequestId == userSentRequestId &&
+                f.UserReceivedRequestId == userReceivedRequestId);
+        }
     }
 }

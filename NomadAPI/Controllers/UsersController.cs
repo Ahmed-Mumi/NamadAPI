@@ -7,6 +7,7 @@ using NomadAPI.Entities;
 using NomadAPI.Extensions;
 using NomadAPI.Helpers;
 using NomadAPI.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -195,6 +196,81 @@ namespace NomadAPI.Controllers
             Response.AddPaginationHeader(reports.CurrentPage, reports.PageSize, reports.TotalCount, reports.TotalPages);
 
             return reports;
+        }
+
+        [HttpPost("SendFriendship/{userReceivedRequestId}")]
+        public async Task<ActionResult> SendFriendship(int userReceivedRequestId)
+        {
+            var userSentRequestId = User.GetUserId();
+
+            var userReceivedRequest = await _unitOfWork.UserRepository.GetUserByIdAsync(userReceivedRequestId);
+
+            if (userReceivedRequest == null)
+            {
+                return BadRequest("No such user");
+            }
+
+            var friendship = new Friendship()
+            {
+                FriendshipStatusId = FriendshipStatusHelper.Pending,
+                UserReceivedRequestId = userReceivedRequest.Id,
+                UserSentRequestId = userSentRequestId,
+            };
+
+            _unitOfWork.UserRepository.AddFriendship(friendship);
+
+            if (await _unitOfWork.Complete())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Cannot add friendship");
+        }
+
+        [HttpPut("AcceptFriendship")]
+        public async Task<ActionResult> AcceptFriendship(int userSentRequestId, int userReceivedRequestId)
+        {
+            var friendship = await _unitOfWork.UserRepository.GetFriendship(userSentRequestId, userReceivedRequestId);
+
+            if (friendship == null)
+            {
+                return BadRequest("Friendship does not exist");
+            }
+
+            friendship.ConfirmedFriendshipDate = DateTime.UtcNow;
+            friendship.FriendshipStatusId = FriendshipStatusHelper.Accepted;
+
+            if (await _unitOfWork.Complete())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Cannot accept friendship");
+        }
+
+        [HttpPut("RejectFriendship")]
+        public async Task<ActionResult> RejectFriendship(int userSentRequestId, int userReceivedRequestId)
+        {
+            var friendship = await _unitOfWork.UserRepository.GetFriendship(userSentRequestId, userReceivedRequestId);
+
+            if (friendship == null)
+            {
+                return BadRequest("Friendship does not exist");
+            }
+
+            if (friendship.FriendshipStatusId == FriendshipStatusHelper.Accepted)
+            {
+                return BadRequest("Friendship already accepted");
+            }
+
+            friendship.FriendshipStatusId = FriendshipStatusHelper.Rejected;
+
+            if (await _unitOfWork.Complete())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Cannot accept friendship");
         }
     }
 }

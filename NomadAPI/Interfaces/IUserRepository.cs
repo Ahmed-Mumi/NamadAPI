@@ -18,5 +18,8 @@ namespace NomadAPI.Interfaces
         void AddReport(Report report);
         Task<ReportDto> GetReport(int id);
         Task<PagedList<ReportDto>> GetReportsAsync(ReportParams reportParams);
+        void AddFriendship(Friendship friendship);
+        void RemoveFriendship(Friendship friendship);
+        Task<Friendship> GetFriendship(int userSentRequestId, int userReceivedRequestId);
     }
 }

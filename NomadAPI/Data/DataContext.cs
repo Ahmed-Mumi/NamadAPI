@@ -36,6 +36,9 @@ namespace NomadAPI.Data
         public DbSet<Language> Languages { get; set; }
         public DbSet<LanguageUserStatus> LanguageUserStatuses { get; set; }
         public DbSet<MeansOfTravel> MeansOfTravels { get; set; }
+        public DbSet<Friendship> Friendships { get; set; }
+        public DbSet<FriendshipStatus> FriendshipStatuses { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -107,6 +110,21 @@ namespace NomadAPI.Data
                 .HasOne(s => s.UserReports)
                 .WithMany(r => r.UsersReports)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Friendship>()
+                .HasKey(k => new { k.UserReceivedRequestId, k.UserSentRequestId });
+
+            builder.Entity<Friendship>()
+                .HasOne(s => s.UserSentRequest)
+                .WithMany(r => r.UsersSentRequest)
+                .HasForeignKey(s => s.UserSentRequestId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Friendship>()
+                .HasOne(s => s.UserReceivedRequest)
+                .WithMany(r => r.UsersReceivedRequest)
+                .HasForeignKey(s => s.UserReceivedRequestId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.ApplyUtcDateTimeConverter();
         }
