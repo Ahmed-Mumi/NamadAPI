@@ -16,6 +16,8 @@ namespace NomadAPI.Entities
         public AppUser User { get; set; }
         public int UserId { get; set; }
         public string Url { get; set; }
+        public MeansOfTravel MeansOfTravel { get; set; }
+        public int? MeansOfTravelId { get; set; }
         public ICollection<Application> Applications { get; set; }
         public ICollection<TravelCity> TravelCities { get; set; }
 

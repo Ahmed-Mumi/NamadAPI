@@ -37,6 +37,18 @@ namespace NomadAPI.Controllers
             if (recipient == null)
                 return NotFound();
 
+            if (await _unitOfWork.MessageRepository.GetChat(sender.Id, recipient.Id) == null)
+            {
+                var chat = new Chat
+                {
+                    SenderId = sender.Id,
+                    RecipientId = recipient.Id,
+                    UserId = sender.Id
+                };
+
+                _unitOfWork.MessageRepository.AddChat(chat);
+            }
+
             var message = new Message
             {
                 Sender = sender,

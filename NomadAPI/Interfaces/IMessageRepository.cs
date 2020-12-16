@@ -20,6 +20,8 @@ namespace NomadAPI.Interfaces
         //Task<PagedList<MessageDto>> GetMessagesForUser(MessageParams message);
         Task<IEnumerable<MessageDto>> GetMessageThread(string currentEmail, string recipientEmail);
         //Task<bool> SaveAllAsync();
+        Task<Chat> GetChat(int senderId, int recipientId);
+        void AddChat(Chat chat);
 
     }
 }

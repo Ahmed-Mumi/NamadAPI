@@ -124,11 +124,21 @@ namespace NomadAPI.Data
 
         }
 
+        public async Task<Chat> GetChat(int senderId, int recipientId)
+        {
+            return await _context.Chats.FirstOrDefaultAsync(m => (m.RecipientId == senderId && m.SenderId == recipientId)
+                    || (m.RecipientId == recipientId && m.SenderId == senderId)); ;
+        }
+
         public void RemoveConnection(Connection connection)
         {
             _context.Connections.Remove(connection);
         }
 
+        public void AddChat(Chat chat)
+        {
+            _context.Chats.Add(chat);
+        }
         //public async Task<bool> SaveAllAsync()
         //{
         //    return await _context.SaveChangesAsync() > 0;

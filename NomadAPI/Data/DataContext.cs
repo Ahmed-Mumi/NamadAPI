@@ -35,6 +35,7 @@ namespace NomadAPI.Data
         public DbSet<CountryUserStatus> CountryUserStatuses { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<LanguageUserStatus> LanguageUserStatuses { get; set; }
+        public DbSet<MeansOfTravel> MeansOfTravels { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder builder)

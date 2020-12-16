@@ -128,6 +128,19 @@ namespace NomadAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MeansOfTravels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MeansOfTravels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -337,33 +350,6 @@ namespace NomadAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Travels",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TravelFromDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TravelToDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PostedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Flexible = table.Column<bool>(type: "bit", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    NumberOfApplicants = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Travels", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Travels_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserReactions",
                 columns: table => new
                 {
@@ -461,29 +447,37 @@ namespace NomadAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Applications",
+                name: "Travels",
                 columns: table => new
                 {
-                    UserAppliedAdId = table.Column<int>(type: "int", nullable: false),
-                    TravelId = table.Column<int>(type: "int", nullable: false),
-                    AppliedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Official = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TravelFromDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TravelToDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PostedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Flexible = table.Column<bool>(type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    NumberOfApplicants = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MeansOfTravelId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Applications", x => new { x.UserAppliedAdId, x.TravelId });
+                    table.PrimaryKey("PK_Travels", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Applications_AspNetUsers_UserAppliedAdId",
-                        column: x => x.UserAppliedAdId,
+                        name: "FK_Travels_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Applications_Travels_TravelId",
-                        column: x => x.TravelId,
-                        principalTable: "Travels",
+                        name: "FK_Travels_MeansOfTravels_MeansOfTravelId",
+                        column: x => x.MeansOfTravelId,
+                        principalTable: "MeansOfTravels",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -540,6 +534,32 @@ namespace NomadAPI.Migrations
                         principalTable: "CountryUserStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Applications",
+                columns: table => new
+                {
+                    UserAppliedAdId = table.Column<int>(type: "int", nullable: false),
+                    TravelId = table.Column<int>(type: "int", nullable: false),
+                    AppliedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Official = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Applications", x => new { x.UserAppliedAdId, x.TravelId });
+                    table.ForeignKey(
+                        name: "FK_Applications_AspNetUsers_UserAppliedAdId",
+                        column: x => x.UserAppliedAdId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Applications_Travels_TravelId",
+                        column: x => x.TravelId,
+                        principalTable: "Travels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -691,6 +711,11 @@ namespace NomadAPI.Migrations
                 column: "TravelId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Travels_MeansOfTravelId",
+                table: "Travels",
+                column: "MeansOfTravelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Travels_UserId",
                 table: "Travels",
                 column: "UserId");
@@ -774,6 +799,9 @@ namespace NomadAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "MeansOfTravels");
 
             migrationBuilder.DropTable(
                 name: "Continents");

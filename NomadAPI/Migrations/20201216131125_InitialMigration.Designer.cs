@@ -10,7 +10,7 @@ using NomadAPI.Data;
 namespace NomadAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20201214113037_InitialMigration")]
+    [Migration("20201216131125_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -515,6 +515,21 @@ namespace NomadAPI.Migrations
                     b.ToTable("LanguageUserStatuses");
                 });
 
+            modelBuilder.Entity("NomadAPI.Entities.MeansOfTravel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MeansOfTravels");
+                });
+
             modelBuilder.Entity("NomadAPI.Entities.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -622,6 +637,9 @@ namespace NomadAPI.Migrations
                     b.Property<bool>("Flexible")
                         .HasColumnType("bit");
 
+                    b.Property<int>("MeansOfTravelId")
+                        .HasColumnType("int");
+
                     b.Property<int>("NumberOfApplicants")
                         .HasColumnType("int");
 
@@ -641,6 +659,8 @@ namespace NomadAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MeansOfTravelId");
 
                     b.HasIndex("UserId");
 
@@ -896,11 +916,19 @@ namespace NomadAPI.Migrations
 
             modelBuilder.Entity("NomadAPI.Entities.Travel", b =>
                 {
+                    b.HasOne("NomadAPI.Entities.MeansOfTravel", "MeansOfTravel")
+                        .WithMany()
+                        .HasForeignKey("MeansOfTravelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("NomadAPI.Entities.AppUser", "User")
                         .WithMany("Travels")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MeansOfTravel");
 
                     b.Navigation("User");
                 });

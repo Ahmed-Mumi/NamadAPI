@@ -144,9 +144,11 @@ namespace NomadAPI.Controllers
         [HttpDelete("MakeApplicationOfficial")]
         public async Task<ActionResult> MakeApplicationOfficial(int travelId, int userAppliedAdId)
         {
+            var userPostedAdId = User.GetUserId();
             var applicationToOfficial = await _unitOfWork.TravelRepository.GetApplicationAsync(travelId, userAppliedAdId);
 
             applicationToOfficial.Official = true;
+            applicationToOfficial.UserPostedAdId = userPostedAdId;
 
             var travelToChangeActive = await _unitOfWork.TravelRepository.GetTravelAsync(applicationToOfficial.TravelId);
 
