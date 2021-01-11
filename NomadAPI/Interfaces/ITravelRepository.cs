@@ -23,5 +23,6 @@ namespace NomadAPI.Interfaces
         void RemoveTravelCity(TravelCity travelCityToRemove);
         Task<TravelCity> GetTravelCityAsync(int travelId, int cityId);
         IQueryable<Travel> GetTravelsHangfire();
+        void RemoveTravel(int id);
     }
 }

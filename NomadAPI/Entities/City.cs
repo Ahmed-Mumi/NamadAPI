@@ -1,4 +1,6 @@
-﻿namespace NomadAPI.Entities
+﻿using System.Collections.Generic;
+
+namespace NomadAPI.Entities
 {
     public class City
     {
@@ -9,5 +11,6 @@
         public string ToVisit { get; set; }
         public Country Country { get; set; }
         public int CountryId { get; set; }
+        //public ICollection<AppUser> Users { get; set; }
     }
 }

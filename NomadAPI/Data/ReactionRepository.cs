@@ -20,8 +20,6 @@ namespace NomadAPI.Data
         public async Task<UserReaction> GetUserReaction(int reactedUserId, int reactedByUserId)
         {
             return await _context.UserReactions.FindAsync(reactedByUserId, reactedUserId);
-            //return await _context.UserReactions.FirstOrDefaultAsync(x => x.ReactedUserId == reactedUserId && x.ReactedByUserId == reactedByUserId);
-
         }
 
         public async Task<IEnumerable<ReactionDto>> GetUsersReacted(int userId)

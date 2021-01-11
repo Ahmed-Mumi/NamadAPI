@@ -12,10 +12,8 @@ namespace NomadAPI.Data.SeedData
     public class Seed
     {
         public static async Task SeedUsers(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
-        //public static async Task SeedUsers(DataContext context)
         {
             if (await userManager.Users.AnyAsync())
-                //if (await context.Users.AnyAsync())
                 return;
 
             var userData = await System.IO.File.ReadAllTextAsync("Data/SeedData/UserSeedData.json");
@@ -37,13 +35,8 @@ namespace NomadAPI.Data.SeedData
 
             foreach (var user in users)
             {
-                //using var hmac = new HMACSHA512();
                 user.Email = user.Email.ToLower();
                 user.UserName = user.Email.ToLower();
-                //user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Pa$$w0rd"));
-                //user.PasswordSalt = hmac.Key;
-
-                //await context.Users.AddAsync(user);
 
                 await userManager.CreateAsync(user, "Pa$$w0rd");
                 await userManager.AddToRoleAsync(user, "Nomad");
@@ -60,8 +53,6 @@ namespace NomadAPI.Data.SeedData
             await userManager.CreateAsync(admin, "Pa$$w0rd");
 
             await userManager.AddToRolesAsync(admin, new[] { "Admin", "Nomad" });
-
-            //await context.SaveChangesAsync();
         }
     }
 }

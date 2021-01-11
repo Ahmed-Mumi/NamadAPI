@@ -11,13 +11,10 @@ namespace NomadAPI.Data
 {
     public class DataContext : IdentityDbContext<AppUser, AppRole, int, IdentityUserClaim<int>, AppUserRole,
         IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
-    //public class DataContext : DbContext
     {
         public DataContext(DbContextOptions options) : base(options)
         {
         }
-
-        //public DbSet<AppUser> Users { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<UserReaction> UserReactions { get; set; }
         public DbSet<Message> Messages { get; set; }
@@ -27,6 +24,7 @@ namespace NomadAPI.Data
         public DbSet<Travel> Travels { get; set; }
         public DbSet<Application> Applications { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<Gender> Genders { get; set; }
         public DbSet<TravelCity> TravelCities { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Country> Countries { get; set; }

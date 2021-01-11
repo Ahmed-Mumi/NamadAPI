@@ -20,7 +20,7 @@ namespace NomadAPI.Controllers
         }
 
         [HttpPost("{userReceivedId}")]
-        public async Task<ActionResult> AddReaction(int userReceivedId)
+        public async Task<ActionResult> AddReaction(int userReceivedId, bool positiveReaction)
         {
             var reactedUserId = User.GetUserId();
             var reactedByUser = await _unitOfWork.UserRepository.GetUserByIdAsync(userReceivedId);
@@ -37,7 +37,8 @@ namespace NomadAPI.Controllers
             userReaction = new UserReaction
             {
                 ReactedByUserId = reactedByUser.Id,
-                ReactedUserId = reactedUserId
+                ReactedUserId = reactedUserId,
+                PositiveReaction = positiveReaction
             };
 
             reactedUser.ReactedUsers.Add(userReaction);

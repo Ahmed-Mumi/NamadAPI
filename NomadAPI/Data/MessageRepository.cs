@@ -64,7 +64,6 @@ namespace NomadAPI.Data
         }
 
         public async Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
-        //public async Task<PagedList<MessageDto>> GetMessagesForUser(MessageParams messageParams)
         {
             var query = _context.Messages
                 .Include(u => u.Sender).ThenInclude(p => p.Photos)
@@ -89,19 +88,12 @@ namespace NomadAPI.Data
 
             var queryableMessages = chatMessage.AsQueryable();
 
-
-            //var messages = query.ProjectTo<MessageDto>(_mapper.ConfigurationProvider);
-
-
             return await PagedList<Message>.CreateAsync(queryableMessages, messageParams.PageNumber, messageParams.PageSize);
-            //return await PagedList<MessageDto>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
         }
 
         public async Task<IEnumerable<MessageDto>> GetMessageThread(string currentEmail, string recipientEmail)
         {
             var messages = await _context.Messages
-                //.Include(u => u.Sender).ThenInclude(p => p.Photos)
-                //.Include(u => u.Recipient).ThenInclude(p => p.Photos)
                 .Where(m => (m.Recipient.Email == currentEmail && m.Sender.Email == recipientEmail) ||
                     (m.Recipient.Email == recipientEmail && m.Sender.Email == currentEmail))
                 .OrderBy(m => m.MessageSent)
@@ -116,10 +108,8 @@ namespace NomadAPI.Data
                 {
                     message.DateRead = DateTime.UtcNow;
                 }
-                //await _context.SaveChangesAsync();
             }
 
-            //return _mapper.Map<IEnumerable<MessageDto>>(messages);
             return messages;
 
         }
@@ -139,9 +129,5 @@ namespace NomadAPI.Data
         {
             _context.Chats.Add(chat);
         }
-        //public async Task<bool> SaveAllAsync()
-        //{
-        //    return await _context.SaveChangesAsync() > 0;
-        //}
     }
 }

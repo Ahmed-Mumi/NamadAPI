@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NomadAPI.Data;
 
 namespace NomadAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210104144537_UserGender")]
+    partial class UserGender
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,9 +149,6 @@ namespace NomadAPI.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -246,8 +245,6 @@ namespace NomadAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CityId");
-
                     b.HasIndex("GenderId");
 
                     b.HasIndex("NormalizedEmail")
@@ -290,7 +287,7 @@ namespace NomadAPI.Migrations
                     b.Property<bool>("Official")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("UserPostedAdId")
+                    b.Property<int>("UserPostedAdId")
                         .HasColumnType("int");
 
                     b.HasKey("UserAppliedAdId", "TravelId");
@@ -805,15 +802,9 @@ namespace NomadAPI.Migrations
 
             modelBuilder.Entity("NomadAPI.Entities.AppUser", b =>
                 {
-                    b.HasOne("NomadAPI.Entities.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId");
-
                     b.HasOne("NomadAPI.Entities.Gender", "Gender")
                         .WithMany()
                         .HasForeignKey("GenderId");
-
-                    b.Navigation("City");
 
                     b.Navigation("Gender");
                 });

@@ -10,5 +10,6 @@ namespace NomadAPI.Dtos
         public string Description { get; set; }
         public string Url { get; set; }
         public int UserId { get; set; }
+        public int? MeansOfTravelId { get; set; }
     }
 }

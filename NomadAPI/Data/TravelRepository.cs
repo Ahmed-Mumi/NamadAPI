@@ -27,10 +27,6 @@ namespace NomadAPI.Data
         //Travel
         public async Task<TravelDto> GetTravelAsync(int id)
         {
-            var user = await _context.Travels
-                .Where(t => t.Id == id)
-                .SingleOrDefaultAsync();
-
             return await _context.Travels
                 .Where(t => t.Id == id)
                 .ProjectTo<TravelDto>(_mapper.ConfigurationProvider)
@@ -87,15 +83,22 @@ namespace NomadAPI.Data
         {
             if (travelParams.TravelFromDate != null && travelParams.TravelToDate != null)
             {
-                query = query.Where(x => x.TravelFromDate >= travelParams.TravelFromDate && x.TravelToDate <= travelParams.TravelToDate);
+                query = query.Where(x => ((x.TravelFromDate >= travelParams.TravelFromDate || x.TravelFromDate == null) &&
+                                         (x.TravelToDate <= travelParams.TravelToDate ||
+                                         (x.TravelToDate == null ? x.TravelFromDate <= travelParams.TravelToDate : false))) ||
+                                         (x.TravelFromDate == null && x.TravelToDate == null));
             }
             else if (travelParams.TravelFromDate != null)
             {
-                query = query.Where(x => x.TravelFromDate >= travelParams.TravelFromDate);
+                query = query.Where(x => x.TravelFromDate >= travelParams.TravelFromDate ||
+                                (x.TravelFromDate == null ? x.TravelToDate >= travelParams.TravelFromDate : false) ||
+                                (x.TravelFromDate == null && x.TravelToDate == null));
             }
             else if (travelParams.TravelToDate != null)
             {
-                query = query.Where(x => x.TravelToDate <= travelParams.TravelToDate);
+                query = query.Where(x => x.TravelToDate <= travelParams.TravelToDate ||
+                                (x.TravelToDate == null ? x.TravelFromDate <= travelParams.TravelToDate : false) ||
+                                (x.TravelFromDate == null && x.TravelToDate == null));
             }
 
             return query;
@@ -109,7 +112,7 @@ namespace NomadAPI.Data
         public void RemoveTravel(int id)
         {
             var travelToRemove = _context.Travels.SingleOrDefault(t => t.Id == id);
-            _context.Remove(_context.Travels.Remove(travelToRemove));
+            _context.Travels.Remove(travelToRemove);
         }
 
         public void AddTravel(Travel travel)

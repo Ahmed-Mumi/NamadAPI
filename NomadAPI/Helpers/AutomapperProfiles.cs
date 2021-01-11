@@ -28,9 +28,6 @@ namespace NomadAPI.Helpers
                 .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src => src.Recipient.Photos.FirstOrDefault(p => p.IsMain).Url))
                 .ForMember(dest => dest.RecipientFullName, opt => opt.MapFrom(src => src.Recipient.FullName))
                 .ForMember(dest => dest.SenderFullName, opt => opt.MapFrom(src => src.Sender.FullName));
-
-            //CreateMap<DateTime, DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
-
         }
     }
 }

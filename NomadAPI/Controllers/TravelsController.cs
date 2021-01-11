@@ -8,6 +8,7 @@ using NomadAPI.Helpers;
 using NomadAPI.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NomadAPI.Controllers
@@ -26,14 +27,11 @@ namespace NomadAPI.Controllers
             _userManager = userManager;
         }
 
-
         //Travels
         [HttpPost]
         public async Task<ActionResult<TravelDto>> AddTravel(CreateTravelDto createTravelDto)
         {
-            var userId = User.GetUserId();
-
-            createTravelDto.UserId = userId;
+            createTravelDto.UserId = User.GetUserId();
 
             var travel = _mapper.Map<Travel>(createTravelDto);
 
@@ -47,6 +45,28 @@ namespace NomadAPI.Controllers
             return BadRequest("Failed to save travel");
         }
 
+        [HttpDelete("RemoveTravel/{travelId}")]
+        public async Task<ActionResult> RemoveTravel(int travelId)
+        {
+            var userLoggedIn = User.GetUserId();
+            var travel = await _unitOfWork.TravelRepository.GetCheckTravelExist(travelId);
+
+            if (travel == null)
+                return BadRequest("No such travel");
+
+            if (userLoggedIn != travel.UserId)
+                return BadRequest("Travel is not yours to remove");
+
+            _unitOfWork.TravelRepository.RemoveTravel(travelId);
+
+            if (await _unitOfWork.Complete())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Failed to remove travel");
+        }
+
         [HttpPut]
         public async Task<ActionResult> EditTravel(TravelUpdateDto travelUpdateDto)
         {
@@ -56,6 +76,9 @@ namespace NomadAPI.Controllers
                 return BadRequest("This post does not belong to this user.");
 
             var travel = await _unitOfWork.TravelRepository.GetCheckTravelExist(travelUpdateDto.Id);
+
+            if (travel == null)
+                return BadRequest("Travel does not exist");
 
             _mapper.Map(travelUpdateDto, travel);
 
@@ -73,10 +96,10 @@ namespace NomadAPI.Controllers
             return await _unitOfWork.TravelRepository.GetTravelAsync(id);
         }
 
-        [HttpPost("ChangeActiveTravel/{id}")]
-        public async Task<ActionResult> ChangeActiveTravel(int id)
+        [HttpPost("ChangeActiveTravel/{travelId}")]
+        public async Task<ActionResult> ChangeActiveTravel(int travelId)
         {
-            var travelToChangeActive = await _unitOfWork.TravelRepository.GetCheckTravelExist(id);
+            var travelToChangeActive = await _unitOfWork.TravelRepository.GetCheckTravelExist(travelId);
             if (travelToChangeActive == null)
                 return BadRequest("No such travel");
 
@@ -96,7 +119,6 @@ namespace NomadAPI.Controllers
 
             var travels = await _unitOfWork.TravelRepository.GetTravelsAsync(travelParams, roles);
 
-
             Response.AddPaginationHeader(travels.CurrentPage, travels.PageSize, travels.TotalCount, travels.TotalPages);
 
             return travels;
@@ -108,14 +130,14 @@ namespace NomadAPI.Controllers
         {
             var userAppliedAdId = User.GetUserId();
 
-            var applicationExists = await _unitOfWork.TravelRepository.ApplicationExists(userAppliedAdId, travelId);
-            if (applicationExists != null)
-                return BadRequest("You already applied to this ad");
-
             var travel = await _unitOfWork.TravelRepository.GetCheckTravelExist(travelId);
 
             if (travel == null)
                 return BadRequest("No such travel");
+
+            var applicationExists = await _unitOfWork.TravelRepository.ApplicationExists(userAppliedAdId, travelId);
+            if (applicationExists != null)
+                return BadRequest("You already applied to this ad");
 
             if (travel.UserId == userAppliedAdId)
                 return BadRequest("You cannot apply to your own ad");
@@ -141,16 +163,28 @@ namespace NomadAPI.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("MakeApplicationOfficial")]
+        [HttpPost("MakeApplicationOfficial")]
         public async Task<ActionResult> MakeApplicationOfficial(int travelId, int userAppliedAdId)
         {
             var userPostedAdId = User.GetUserId();
             var applicationToOfficial = await _unitOfWork.TravelRepository.GetApplicationAsync(travelId, userAppliedAdId);
 
+            if (applicationToOfficial == null)
+                return BadRequest("Application does not exist");
+
+            var applicationOfficialExists = await _unitOfWork.TravelRepository.GetApplications(travelId);
+
+            var officialExists = applicationOfficialExists.FirstOrDefault(x => x.Official);
+            if (officialExists != null)
+                return BadRequest("There is already one arranged travel");
+
             applicationToOfficial.Official = true;
             applicationToOfficial.UserPostedAdId = userPostedAdId;
 
-            var travelToChangeActive = await _unitOfWork.TravelRepository.GetTravelAsync(applicationToOfficial.TravelId);
+            var travelToChangeActive = await _unitOfWork.TravelRepository.GetCheckTravelExist(applicationToOfficial.TravelId);
+
+            if (travelToChangeActive == null)
+                return BadRequest("Travel does not exist");
 
             travelToChangeActive.Active = false;
 
@@ -171,11 +205,13 @@ namespace NomadAPI.Controllers
                 return BadRequest("No such travel");
 
             var application = await _unitOfWork.TravelRepository.GetApplicationAsync(travelId, userAppliedAdId);
+            if (application == null)
+                return BadRequest("No such application");
+
             if (application.Official)
             {
                 travel.Active = true;
             }
-
 
             travel.NumberOfApplicants--;
 

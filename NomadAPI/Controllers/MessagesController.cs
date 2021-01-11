@@ -71,7 +71,6 @@ namespace NomadAPI.Controllers
         {
             messageParams.Email = User.GetEmail();
 
-
             var messagesFromRepo = await _unitOfWork.MessageRepository.GetMessagesForUser(messageParams);
             var messages = _mapper.Map<IEnumerable<MessageDto>>(messagesFromRepo);
 
@@ -81,12 +80,5 @@ namespace NomadAPI.Controllers
             return Ok(messages);
         }
 
-        //[HttpGet("thread/{email}")]
-        //public async Task<ActionResult<IEnumerable<MessageDto>>> GetMessageThread(string email)
-        //{
-        //    var currentEmail = User.GetEmail();
-
-        //    return Ok(await _messageRepository.GetMessageThread(currentEmail, email));
-        //}
     }
 }

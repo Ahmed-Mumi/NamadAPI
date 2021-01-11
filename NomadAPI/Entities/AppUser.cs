@@ -8,12 +8,6 @@ namespace NomadAPI.Entities
 {
     public class AppUser : IdentityUser<int>
     {
-        //public int Id { get; set; }
-        //public byte[] PasswordHash { get; set; }
-        //public byte[] PasswordSalt { get; set; }
-        //public string UserName { get; set; }
-        //[Required]
-        //public string Email { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
@@ -31,6 +25,10 @@ namespace NomadAPI.Entities
         public int NumberOfAds { get; set; } = 0;
         public int NumberOfApplications { get; set; } = 0;
         public string AboutMe { get; set; }
+        public City City { get; set; }
+        public int? CityId { get; set; }
+        public Gender Gender { get; set; }
+        public int? GenderId { get; set; }
         public ICollection<Photo> Photos { get; set; }
         public ICollection<UserReaction> ReactedUsers { get; set; }
         public ICollection<UserReaction> ReactedByUsers { get; set; }
@@ -55,9 +53,5 @@ namespace NomadAPI.Entities
             get { return _fullName; }
             set { _fullName = $"{FirstName} {LastName}"; }
         }
-        //public int GetAge()
-        //{
-        //    return DateOfBirth.CalculateAge();
-        //}
     }
 }

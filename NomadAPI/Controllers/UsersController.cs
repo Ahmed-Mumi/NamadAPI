@@ -28,13 +28,26 @@ namespace NomadAPI.Controllers
             _photoService = photoService;
         }
 
+        [HttpPost("{email}")]
+        public async Task<ActionResult> DeActivateUser(string email)
+        {
+            var userToDeactivate = await _unitOfWork.UserRepository.GetUserByEmailAsync(email);
+
+            if (email == null)
+                return BadRequest("User does not exist");
+
+            userToDeactivate.IsActive = !userToDeactivate.IsActive;
+
+            if (await _unitOfWork.Complete())
+                return NoContent();
+
+            return BadRequest("Failed to DeActivate user");
+        }
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<NomadDto>>> GetUsers([FromQuery] UserParams userParams)
         {
-            //var user = await _unitOfWork.UserRepository.GetUserByIdAsync(User.GetUserId());
-
-            //userParams.CurrentUserEmail = user.Email;
             userParams.CurrentUserEmail = User.GetEmail();
 
             var users = await _unitOfWork.UserRepository.GetNomadsAsync(userParams);

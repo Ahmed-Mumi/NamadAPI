@@ -29,7 +29,6 @@ namespace NomadAPI
                 await context.Database.MigrateAsync();
                 var userManager = services.GetRequiredService<UserManager<AppUser>>();
                 await Seed.SeedUsers(userManager, roleManager);
-                //await Seed.SeedUsers(context);
             }
             catch (Exception ex)
             {
